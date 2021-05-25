@@ -1,0 +1,28 @@
+04/03/2019 04:29:44 pm
+Start logging sync_peers_blockchain.php ouput
+
+Me [bc1] am less updated than [https://factaici.000webhostapp.com/bc2/jcoin/]
+Me [bc1] am less updated than [https://bjerg.000webhostapp.com/bc3/jcoin/]
+Me [bc1] am less updated than [http://emoney.eu5.org/bc4/altcoin/]
+Blockchain File copied from remote node [https://factaici.000webhostapp.com/bc2/jcoin/] ! 
+User File copied from remote!
+Blockchain file integrity validated ok 
+Local blockchain.dat & user.dat file replace with remote [https://factaici.000webhostapp.com/bc2/jcoin/] Successful!
+
+
+04/03/2019 04:29:45 pm
+End logging sync_peers_blockchain.php ouput
+***************************************************************************
+
+04/03/2019 09:01:10 pm
+Start logging sync_peers_blockchain.php ouput
+
+Local and Remote Nodes [https://factaici.000webhostapp.com/bc2/jcoin/] are in Sync . 
+Local and Remote Nodes [https://bjerg.000webhostapp.com/bc3/jcoin/] are in Sync . 
+Local and Remote Nodes [http://emoney.eu5.org/bc4/altcoin/] are in Sync . 
+
+
+04/03/2019 09:01:10 pm
+End logging sync_peers_blockchain.php ouput
+***************************************************************************
+

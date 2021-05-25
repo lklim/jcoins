@@ -1,0 +1,603 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>John Crypto Coin Blockchain</title>
+<link rel="stylesheet" type="text/css" href="./html/view.css" media="all">
+<script type="text/javascript" src="./html/view.js"></script>
+<script src="https://kjur.github.io/jsrsasign/jsrsasign-latest-all-min.js"></script>
+<script type="text/javascript">
+function doDisplay() {
+  var obj = document.getElementById("id_dropdown_box");
+  //document.getElementById("demo").innerHTML = "You selected: " + obj.selectedIndex;
+switch (obj.selectedIndex) {
+   case 0:
+    //clearNewuser();
+    //clearNewblock();
+    //clearSelected("id_bal_user");
+    //clearBalQuery();
+    document.getElementById("newuser").style.display = 'none';
+    document.getElementById("newblock").style.display = 'none';
+    document.getElementById("queryuser").style.display = 'none';
+    document.getElementById("demo").innerHTML = '';
+    document.getElementById("php_div").innerHTML = '';
+    break;   
+   case 1:
+    document.getElementById("newuser").style.display = 'block';
+    document.getElementById("newblock").style.display = 'none';
+    document.getElementById("queryuser").style.display = 'none';
+    clearNewuser();
+    break;
+   case 2:
+    document.getElementById("newuser").style.display = 'none';
+    document.getElementById("newblock").style.display = 'block';
+    document.getElementById("queryuser").style.display = 'none';
+    clearNewblock();
+    clearDropdown("id_bk_from_user");
+    clearDropdown("id_bk_to_user");
+    loadUserList("id_bk_from_user,id_bk_to_user");
+    clearSelected("id_bk_from_user");
+    clearSelected("id_bk_to_user");
+    break;
+   case 3:
+    document.getElementById("newuser").style.display = 'none';
+    document.getElementById("newblock").style.display = 'none';
+    document.getElementById("queryuser").style.display = 'block';
+    clearBalQuery();
+    clearDropdown("id_bal_user");
+    loadUserList("id_bal_user");
+    clearSelected("id_bal_user");
+    break;  
+                           }
+ }
+</script>
+</head>
+<body id="main_body" onload="refreshForm()">
+	
+	<img id="top" src="./html/top.png" alt="">
+	<div id="form_container">
+	    
+		<h1><a>John Crypto Coin Blockchain:</a></h1>
+		<form id="form_46249" class="appnitro"  method="post" action="">
+					<div class="form_description">
+			<h2>John Crypto Coin HTML Based Simple Blockchain</h2>
+			<p id="node"></p>
+		</div>						
+			<ul >
+			
+					<li id="li_5" >
+		<label class="description" for="element_5">What do you want to do today? </label>
+		<div>
+		<select class="element select medium" id="id_dropdown_box" name="element_5" onchange="doDisplay();"> 
+			<option value="" selected="selected"></option>
+<option value="1" >Add User</option>
+<option value="2" >Add Block</option>
+<option value="3" >Query Account Balance</option>
+
+		</select>
+		</div> 
+		</li>	<div id="newuser" hidden="true">	<li id="li_1" >
+		<label class="description" for="element_1">First Name: &nbsp &nbsp Last Name:</label>
+		<span>
+			<input id="id_fname" name= "element_1_1" class="element text" maxlength="255" size="8" value=""/>
+			
+		</span>
+		
+		<span>
+			<input id="id_lname" name= "element_1_2" class="element text" maxlength="255" size="14" value=""/>
+			
+		</span> 
+		<span>
+		    <label class="description"><b>Ether Wallet Address:</b></label>
+			<input id="id_ethaddr" name= "ethaddr" class="element text" maxlength="255" readonly="readonly" size="63" value=""/>
+		</span> 
+		</li><li id="li_3" >
+		<label class="description" for="element_3">New User Public Key </label>
+		<div>
+		   <small><textarea id="id_pubkey" rows="15" style="height:125px;width:80%" readonly="readonly"></textarea></small>
+		</div> 
+		</li>		<li id="li_4" >
+		<label class="description" for="element_4">New User Private Key </label>
+		<div>
+			<textarea id="id_privkey" rows="15" style="height:125px;width:80%" readonly="readonly"></textarea>
+		</div> 
+		<button type="button" onclick="genUserwallet()">Generate E-wallet addr & Keys pair</button>
+		<br>
+		<br>
+		<a href="https://kjur.github.io/jsrsasign/sample/sample-rsasign.html" target="_blank">RSA Public/Private keys Digital Signature Checker</a>
+		</li>		<li class="section_break">
+			<h3>Section Break</h3>
+			<p></p>
+		</li>	</div><div id="newblock" hidden="true">	<li id="li_7" >
+		<label  class="description" for="element_7">Withdraw From User: </label>
+		<label id="id_bk_from_user_balance" class="description"></label>
+	
+	
+		<div>
+			<select id="id_bk_from_user" onChange="loadWalletAddr(this,'id_bk_from_ethaddr');document.getElementById('id_bk_from_privkey').value = '';"><option></option></select>
+		</div> 
+		</li>		<li id="li_8" >
+		<label class="description" for="element_8">Withdraw From E-wallet Eth Addr </label>
+		<div>
+			<input id="id_bk_from_ethaddr" name="element_8" class="element text medium" type="text" maxlength="255" value="" readonly="readonly"/> 
+		</div> 
+		</li>
+		<li id="li_9" >
+		<label class="description" for="element_9">Send To User </label>
+		
+		
+		<div>
+			<select id="id_bk_to_user" onChange="loadWalletAddr(this,'id_bk_to_ethaddr')"><option></option></select>
+		</div> 
+		</li>		<li id="li_10" >
+		<label class="description" for="element_10">Send To E-wallet Eth Addr </label>
+		<div>
+			<input id="id_bk_to_ethaddr" name="element_10" class="element text medium" type="text" maxlength="255" value="" readonly="readonly" /> 
+		</div> 
+		</li>
+		<li id="li_11" >
+		<label class="description" for="element_11">Amount of Jcoins To Send</label>
+		<div>
+			<input id="id_bk_from_amount" name="element_11" class="element text medium" type="number" maxlength="255" value=""/> 
+		</div> 
+		</li>
+		<label class="description" for="element_4">From User Private Key </label>
+		<div>
+			<textarea id="id_bk_from_privkey" oninput="loadwalletFromBalance()" onfocus="loadblock()" rows="15" style="height:125px;width:80%"></textarea>
+		</div> 
+		<li class="section_break">
+			<h3>Section Break</h3>
+			<p></p>
+		</li></div><div id="queryuser" hidden="true">
+		<li id="li_15" >
+		<label class="description" for="element_15"></label>
+		<div>
+			<input id="id_bal_amt" name="element_15" class="element text medium" type="text" maxlength="255" value="" readonly="readonly" /> 
+		</div> 
+		</li>		
+		<li id="li_13" >
+		<label class="description" for="element_13">User </label>
+		<div>
+			<select id="id_bal_user" onChange="loadWalletAddr(this,'id_bal_ethaddr')"><option></option></select>
+		</div> 
+		</li>		<li id="li_14" >
+		<label class="description" for="element_14">E-wallet Eth Addr </label>
+		<div>
+			<input id="id_bal_ethaddr" name="element_14" class="element text medium" type="text" maxlength="255" value="" readonly="readonly" /> 
+		</div> 
+		</li>
+		<label class="description" for="element_4">User Private Key </label>
+		<div>
+			<textarea id="id_bal_user_privkey" oninput="loadwalletFromBalance()" onfocus="loadblock()" rows="15" style="height:125px;width:80%"></textarea>
+		</div>
+		</div>
+		 
+		<button type="button" id="submitting" onclick="doSubmitting()">Submiting</button>
+			    
+			</ul>
+		</form>	
+		
+		<div id="footer">
+		 Simple HTML Blockchain Demonstration <a href="http://bit.do/JohnLim">John Lim</a>
+		</div>
+	</div>
+	<img id="bottom" src="./html/bottom.png" alt="">
+     
+     <p id="demo"></p>
+     <div id="php_div"></div>
+     <div id="php_div2"><input type="hidden" id="pub_key" name="pub_key" value="">
+     <input type="hidden" id="pte_key" name="pte_key" value="">
+     </div>
+     <script>
+     
+function doSubmitting(){
+    var obj = document.getElementById("id_dropdown_box");
+  
+switch (obj.selectedIndex) {
+   case 1:
+     addNewUser();
+    break;
+   case 2:
+     addNewBlock();
+    break;
+   case 3:
+     queryUserBal();
+    break;  
+   case 4:
+    break;
+                             }
+}    
+function genUserwallet() {
+    
+  var msg =  document.getElementById("id_fname").value.trim() + document.getElementById("id_lname").value.trim();
+  var keypair = KEYUTIL.generateKeypair("RSA", 512);
+  //var ptestr = KEYUTIL.getPEM(keypair.prvKeyObj,"PKCS8PRV") ;
+  var ptestr = KEYUTIL.getPEM(keypair.prvKeyObj,"PKCS1PRV") ;
+  var pubstr = KEYUTIL.getPEM(keypair.pubKeyObj) ;
+  var pubKey = urEncode(pubstr);
+  
+      sigValueHex = getSignature(ptestr, msg);
+      sigValueHex = urEncode(sigValueHex);
+  var vars = "&message="+msg+"&signature="+sigValueHex+"&pubKey="+pubKey;
+  
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("php_div").innerHTML = this.responseText;
+     
+      if(document.getElementById("ethaddr").value.startsWith("0x") ){
+         document.getElementById("id_ethaddr").value  =  document.getElementById("ethaddr").value;
+         document.getElementById("id_privkey").value = document.getElementById("pte_key").value = ptestr;
+         document.getElementById("id_pubkey").value = document.getElementById("pub_key").value= pubstr;
+        }
+      else
+        alert(document.getElementById("ethaddr").value);
+    }
+   };
+  xhttp.open("POST", "./php/user_gen_keys.php", true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send(vars); 
+ }
+
+function addNewUser() {
+ 
+  if(!document.getElementById("ethaddr")){
+     alert('Click Generate the Ewallet button first');
+     return;
+  }
+  
+  document.getElementById("submitting").disabled = true;
+  
+  var fname = document.getElementById("id_fname").value.trim();
+  var lname = document.getElementById("id_lname").value.trim();
+  var ethaddr = urEncode(document.getElementById("id_ethaddr").value);
+  var pubKey  = urEncode(document.getElementById("id_pubkey").value);
+  var vars = "&firstname="+fname+"&lastname="+lname+"&ethaddr="+ethaddr+"&pubKey="+pubKey;
+  document.getElementById("demo").innerHTML = '';
+  
+  var xhttp2 = new XMLHttpRequest();
+  
+  xhttp2.open("POST", "./php/add_new_user.php", true);
+  xhttp2.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  
+  xhttp2.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("php_div").innerHTML = this.responseText;
+      document.getElementById("demo").innerHTML = '<h2>' + document.getElementById("usradd_status").value + '</h2>';
+      document.getElementById("submitting").disabled = false;
+      
+    }
+  };
+  
+  xhttp2.send(vars); 
+ 
+ }
+ 
+function urEncode(inputKey)
+{
+  var scarray = {};
+    scarray["&"] = "^36^";
+    scarray["*"] = "^37^";
+    scarray["("] = "^38^";
+    scarray[")"] = "^39^";
+    scarray["_"] = "^40^";
+    scarray["+"] = "^41^";
+    scarray["\n"] = "^42^";
+    
+    for (var key in scarray) {
+       inputKey = inputKey.split(key).join(scarray[key]); 
+    }
+    return inputKey;
+}
+
+function loadblock() {
+   
+    loadwalletFrom();
+    loadwalletTo();
+ 
+}
+
+function loadwalletFrom() {
+     
+  //if (document.getElementById("id_bk_from_ethaddr").value.length == 0) 
+      getWalletaddr(document.getElementById("id_bk_from_user").value, "id_bk_from_ethaddr");
+      
+}
+
+function loadwalletFromBalance() {
+   if(document.getElementById("id_bk_from_privkey").value.isEmpty()){
+   document.getElementById("id_bk_from_user_balance").innerHTML = "";
+   return;
+  }
+   var user_sel = document.getElementById("id_bk_from_user");
+   var fuser = user_sel.options[user_sel.selectedIndex].text;
+   
+  if (document.getElementById("id_bk_from_ethaddr").value.length > 0) 
+      getWalletbal(fuser, "id_bk_from_user_balance",document.getElementById("id_bk_from_privkey").value);
+      
+}
+
+function loadwalletTo() {
+ 
+  //if (document.getElementById("id_bk_to_ethaddr").value.length == 0) 
+      getWalletaddr(document.getElementById("id_bk_to_user").value,"id_bk_to_ethaddr");
+      
+}
+
+function getWalletaddr(user,id){
+ 
+  var vars = "&user="+user+"&detail=ethaddr";
+  importUserInfo(vars, id);
+    
+}
+
+function getWalletbal(user,id,privkey){
+   
+  
+  var txntimestamp = Date.now();
+  var data = user+id+txntimestamp;
+  var blocksign = getSignature(privkey, data);
+  
+  blocksign = urEncode(blocksign);
+  
+  var vars = "&user="+user+"&detail=bal"+"&data="+data+"&signature="+blocksign;
+  importUserBal(vars, id);
+    
+}
+
+
+function clearNewuser(){
+   document.getElementById("id_fname").value = ''; 
+   document.getElementById("id_lname").value = ''; 
+   document.getElementById("id_ethaddr").value = ''; 
+   document.getElementById("id_pubkey").value = ''; 
+   document.getElementById("id_privkey").value = ''; 
+   document.getElementById("demo").innerHTML = '';
+   document.getElementById("php_div").innerHTML = '';
+}
+
+function clearNewblock(){
+   
+   document.getElementById("id_bk_from_ethaddr").value = ''; 
+    
+   document.getElementById("id_bk_to_ethaddr").value = ''; 
+   document.getElementById("id_bk_from_amount").value = ''; 
+   document.getElementById("id_bk_from_privkey").value = ''; 
+   document.getElementById("id_bk_from_user_balance").innerHTML = ''; 
+   document.getElementById("demo").innerHTML = '';
+   document.getElementById("php_div").innerHTML = '';
+}
+
+function clearBalQuery(){
+   document.getElementById("id_bal_amt").value = ''; 
+   document.getElementById("id_bal_ethaddr").value = ''; 
+   document.getElementById("id_bal_user_privkey").value = ''; 
+   document.getElementById("demo").innerHTML = '';
+   document.getElementById("php_div").innerHTML = '';
+}
+
+function clearSelected(id){
+    var elements = document.getElementById(id).options;
+
+    for(var i = 0; i < elements.length; i++){
+      elements[i].selected = false;
+    }
+  }
+
+function clearDropdown(id){
+document.getElementById(id).options.length = 1;
+}
+
+
+function addNewBlock() {
+  
+  
+  var fuser_sel = document.getElementById("id_bk_from_user");
+  var fuser = fuser_sel.options[fuser_sel.selectedIndex].text;
+  
+  var tuser_sel = document.getElementById("id_bk_to_user");
+  var tuser = tuser_sel.options[tuser_sel.selectedIndex].text;
+  
+  if(fuser == tuser) {
+    alert('Withdraw from and Send to cannot be the same person !');
+    return;
+  }
+   
+  if(document.getElementById("id_bk_from_amount").value <= 0) {
+     alert('Amount to transfer must be greater than zero !');
+     return;
+  }
+  
+  if(fuser.isEmpty()||tuser.isEmpty()||document.getElementById("id_bk_from_ethaddr").value.isEmpty()||document.getElementById("id_bk_to_ethaddr").value.isEmpty()||document.getElementById("id_bk_from_amount").value.isEmpty()||document.getElementById("id_bk_from_privkey").value.isEmpty()){
+     alert('Please fill up all fields first !');
+     return;
+  } 
+  document.getElementById("submitting").disabled = true;
+  
+  var fethaddr = document.getElementById("id_bk_from_ethaddr").value;
+  var tethaddr = document.getElementById("id_bk_to_ethaddr").value;
+  var famount = document.getElementById("id_bk_from_amount").value;
+  var txntimestamp = Date.now();
+  
+  var data = fuser+tuser+fethaddr+tethaddr+famount+txntimestamp;
+  
+  var blocksign = getSignature(document.getElementById("id_bk_from_privkey").value, data);
+  
+  blocksign = urEncode(blocksign);
+  var vars = "&fuser="+fuser+"&tuser="+tuser+"&fethaddr="+fethaddr+"&tethaddr="+tethaddr+"&famount="+famount+"&txntimestamp="+txntimestamp+"&signature="+blocksign;
+ 
+ document.getElementById("demo").innerHTML  = '';
+  var xhttp4 = new XMLHttpRequest();
+  
+  xhttp4.open("POST", "./php/add_new_block.php", true);
+  xhttp4.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  
+  xhttp4.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("php_div").innerHTML = this.responseText;
+      document.getElementById("demo").innerHTML  = '<h2>' + document.getElementById("usradd_status").value + '</h2>' + '<br><br>' + this.responseText;
+      //refresh balance left in the account
+      //var bal = parseInt(document.getElementById("id_bk_from_user_balance").innerHTML) - famount;
+      //document.getElementById("id_bk_from_user_balance").innerHTML = bal + " Jcoins left in Balance" ;
+      loadwalletFromBalance();
+      document.getElementById("submitting").disabled = false;
+    }
+  };
+  
+  xhttp4.send(vars); 
+ 
+ }  
+ 
+String.prototype.isEmpty = function() {
+    return (this.length === 0 || !this.trim());
+}; 
+
+function getSignature(signingkey, data) {
+    var sig = new KJUR.crypto.Signature({"alg": "SHA256withRSA"});
+    
+   try {
+      sig.init(signingkey);
+      sig.updateString(data);
+  var sigValueHex = sig.sign();
+    } catch(err) {
+    alert("Not in a valid Private Key format: " + err);
+                 }       
+       return urEncode(sigValueHex);
+} 
+
+function verifyPrivKey(user,privkey){
+  var id = "pub_key" ;  
+  var vars = "&user="+user+"&detail=pubkey";
+  importUserInfo(vars, id);  
+  delay(2000);
+}
+
+
+function importUserInfo(vars,id){
+     
+  var xhttp3 = new XMLHttpRequest();
+  
+  xhttp3.open("POST", "./php/get_user_details.php", true);
+  xhttp3.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  
+  xhttp3.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("php_div").innerHTML = this.responseText;
+      if(document.getElementById("id_user_info").value.length > 0)
+        document.getElementById(id).value = document.getElementById("id_user_info").value;
+                                                     }
+                                        };
+  xhttp3.send(vars);      
+}
+
+function importUserBal(vars,id){
+     
+  var xhttp5 = new XMLHttpRequest();
+  
+  xhttp5.open("POST", "./php/get_user_balance.php", true);
+  xhttp5.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  
+  xhttp5.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("php_div").innerHTML = this.responseText;
+      if(document.getElementById("id_user_info").value.length > 0) {
+        document.getElementById(id).innerHTML = document.getElementById("id_user_info").value + " Jcoins left in Balance";
+        document.getElementById(id).value = document.getElementById("id_user_info").value + " Jcoins left in Balance";
+                                                                     }
+                                                     }
+                                        };
+  xhttp5.send(vars);      
+}
+
+function delay(millis)
+{
+    var date = new Date();
+    var curDate = null;
+    do { curDate = new Date(); }
+    while(curDate-date < millis);
+}
+
+function loadUserList(id)
+{
+  
+  var fd_list = id.split(",");
+  
+  var xhttp6 = new XMLHttpRequest();
+  
+  xhttp6.open("POST", "./php/get_user_list.php", true);
+  xhttp6.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  
+  xhttp6.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("php_div").innerHTML = this.responseText;
+      if(document.getElementById("id_user_info").value.length > 0) {
+        var options = document.getElementById("id_user_info").value.split(",");
+        for (var i = 0; i < fd_list.length; i++) {
+            
+              var select = document.getElementById(fd_list[i]); 
+              for(var j = 0; j < options.length; j++) {
+                 var opt = options[j];
+                 var el = document.createElement("option");
+                 el.textContent = opt;
+                 el.value = opt;
+                 select.appendChild(el);
+                                                       }
+                 
+                                                  }                  
+                                                                     }
+                                                     }
+                                        };
+          xhttp6.send();      
+  }
+
+function loadWalletAddr(sel,id)
+{
+ //alert(sel.options[sel.selectedIndex].text);
+ //var skillsSelect = document.getElementById("id_bal_user");
+ //var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
+ //alert(selectedText);
+ clearBalQuery();
+ getWalletaddr(sel.options[sel.selectedIndex].text, id);
+ 
+}
+
+function queryUserBal(){
+   
+    
+   var user_sel = document.getElementById("id_bal_user");
+   var user = user_sel.options[user_sel.selectedIndex].text;
+   
+    
+     if(user.isEmpty()||document.getElementById("id_bal_ethaddr").value.isEmpty()||document.getElementById("id_bal_user_privkey").value.isEmpty()){
+     alert('Please fill up all fields first !');
+     return;
+  } 
+   
+   getWalletbal(user, "id_bal_amt",document.getElementById("id_bal_user_privkey").value);  
+}
+
+function refreshForm(){
+    ;
+    refreshNode();
+}
+function refreshNode(){
+  var xhttp7 = new XMLHttpRequest();
+  
+  xhttp7.open("POST", "./php/sync_peers_blockchain.php?function=server", true);
+  xhttp7.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  
+  xhttp7.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("php_div").innerHTML = this.responseText;
+      document.getElementById("node").innerHTML = 'Node:' + '<font color="red" size="+1">' + '&nbsp' + document.getElementById("usradd_status").value+'</font>';
+      //document.title = document.getElementById("usradd_status").value;
+     
+                                                     }
+                                        };
+  xhttp7.send();  
+}
+
+</script>
+
+	</body>
+</html>
